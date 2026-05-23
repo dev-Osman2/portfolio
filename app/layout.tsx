@@ -21,8 +21,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className={cn("dark", "font-sans", geist.variable)}>
-      <body className={`${inter.className} bg-[#0a0a0a] text-zinc-100 antialiased selection:bg-cyan-500/30`}>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
+      <body
+        className={cn(
+          inter.className,
+          "bg-background text-foreground antialiased selection:bg-cyan-500/30",
+        )}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
