@@ -6,8 +6,10 @@ import { workHistoryData } from "@/lib/data";
 
 export default function ExperienceTimeline() {
   return (
-    <section id="experience" className="py-20 relative z-10 max-w-6xl mx-auto px-6">
-      
+    <section
+      id="experience"
+      className="py-20 relative z-10 max-w-6xl mx-auto px-6"
+    >
       {/* عنوان القسم */}
       <div className="flex items-center gap-3 mb-16">
         <Briefcase className="w-8 h-8 text-purple-500" />
@@ -18,17 +20,16 @@ export default function ExperienceTimeline() {
 
       {/* حاوية المسار الزمني المتناوب */}
       <div className="relative">
-        
         {/* الخط العمودي الملون والمتدرج في المنتصف تماماً بالشاشات الكبيرة وعلى اليسار في الموبايل */}
         <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-purple-500 via-cyan-400 to-zinc-900 md:-translate-x-1/2 z-0" />
 
         <div className="space-y-12 relative z-10">
           {workHistoryData.map((job, index) => {
             const isLeft = index % 2 === 0; // الأول والثالث على اليسار، الثاني على اليمين
-            
+
             return (
-              <div 
-                key={job.id} 
+              <div
+                key={job.id}
                 className={`flex flex-col md:flex-row items-start w-full relative ${
                   isLeft ? "md:flex-row" : "md:flex-row-reverse"
                 }`}
@@ -41,13 +42,13 @@ export default function ExperienceTimeline() {
                   initial={{ opacity: 0, x: isLeft ? -60 : 60 }} // كروت اليسار تأتي من اليسار، وكروت اليمين تأتي من اليمين
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true, margin: "-80px" }}
-                  whileHover={{ 
+                  whileHover={{
                     y: -5,
                     borderColor: "rgba(6, 182, 212, 0.4)",
-                    backgroundColor: "rgba(20, 20, 25, 0.95)"
+                    backgroundColor: "rgba(20, 20, 25, 0.95)",
                   }}
                   transition={{ duration: 0.6, type: "spring", stiffness: 80 }}
-                  className={`w-full md:w-[calc(50%-32px)] bg-[#0c0c0e]/95 border border-zinc-800/90 rounded-2xl p-6 md:p-8 backdrop-blur-xl shadow-xl transition-all group pl-6 md:pl-8 ml-9 md:ml-0 ${
+                  className={`w-full md:w-[calc(50%-32px)] bg-card border border-zinc-800/90 rounded-2xl p-6 md:p-8 backdrop-blur-xl shadow-xl transition-all group pl-6 md:pl-8 ml-9 md:ml-0 ${
                     isLeft ? "md:mr-auto" : "md:ml-auto"
                   }`}
                 >
@@ -56,10 +57,12 @@ export default function ExperienceTimeline() {
                       <h3 className="text-xl md:text-2xl font-bold text-zinc-100 group-hover:text-cyan-400 transition-colors">
                         {job.title}
                       </h3>
-                      <span className="text-zinc-400 font-medium text-sm md:text-base">{job.company}</span>
+                      <span className="text-zinc-400 font-medium text-sm md:text-base">
+                        {job.company}
+                      </span>
                     </div>
-                    
-                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-zinc-900/80 border border-zinc-800/80 text-xs md:text-sm text-zinc-300 w-fit shrink-0 h-fit">
+
+                    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-card border border-zinc-800/80 text-xs md:text-sm text-zinc-300 w-fit shrink-0 h-fit">
                       <Calendar className="w-3.5 h-3.5 text-cyan-400" />
                       <span>{job.date}</span>
                     </div>
@@ -70,10 +73,15 @@ export default function ExperienceTimeline() {
                   </p>
 
                   <div className="mb-6">
-                    <h4 className="text-zinc-200 font-semibold text-sm md:text-base mb-3">Key Achievements:</h4>
+                    <h4 className="text-zinc-200 font-semibold text-sm md:text-base mb-3">
+                      Key Achievements:
+                    </h4>
                     <ul className="space-y-3">
                       {job.achievements.map((achievement, i) => (
-                        <li key={i} className="flex items-start gap-2 text-zinc-400 text-xs md:text-sm">
+                        <li
+                          key={i}
+                          className="flex items-start gap-2 text-zinc-400 text-xs md:text-sm"
+                        >
                           <ChevronRight className="w-4 h-4 text-purple-400 shrink-0 mt-0.5" />
                           <span className="leading-relaxed">{achievement}</span>
                         </li>

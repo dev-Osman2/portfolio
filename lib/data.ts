@@ -1,7 +1,7 @@
 export const personalLinks = {
   demoUrl: "https://zad-islam.app",
   githubRepo: "https://github.com/dev-Osman2/portfolio.git",
-  imagePlaceholder: "/test" // سيتم قراءتها من مجلد public تلقائياً
+  imagePlaceholder: "/images/test.png" // سيتم قراءتها من مجلد public تلقائياً
 };
 
 export const skillsData = [
