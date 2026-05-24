@@ -2,46 +2,75 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Send, ArrowUp, MessageSquare, GitGraph, Link2 } from "lucide-react";
+import { Mail, Send, GitGraph, Link2, MessageSquare } from "lucide-react";
 import Link from "next/link";
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
     message: "",
   });
 
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus("loading");
 
-    // محاكاة الإرسال
-    setTimeout(() => {
-      setStatus("success");
-      setFormData({ name: "", email: "", subject: "", message: "" });
-    }, 1200);
+    try {
+      // إرسال البيانات الفعلي إلى Web3Forms
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "dcd866b9-bdeb-426e-a26f-7a0f57830be0", // مفتاحك الخاص
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+          from_name: "Portfolio", // الاسم الذي سيظهر كمرسل في الإيميل
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setStatus("success");
+        // تفريغ الحقول بعد نجاح الإرسال
+        setFormData({ name: "", email: "", message: "" });
+
+        // إعادة حالة الزر إلى طبيعته بعد 3 ثواني (اختياري)
+        setTimeout(() => setStatus("idle"), 3000);
+      } else {
+        console.error("Error from Web3Forms:", result);
+        setStatus("error");
+      }
+    } catch (error) {
+      console.error("Submission failed:", error);
+      setStatus("error");
+    }
   };
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   return (
-    <section id="contact" className=" relative z-10 max-w-9xl mx-auto px-6 w-full">
+    <section
+      id="contact"
+      className="relative z-10 max-w-9xl mx-auto px-6 w-full"
+    >
       {/* عنوان القسم */}
       <div className="flex items-center gap-3 mb-16">
         <MessageSquare className="w-8 h-8 text-[#a374ff]" />
         <h2 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-zinc-100">
-          Let's Connect
+          Let&apos;s Connect
         </h2>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-20">
-        
         {/* الجانب الأيسر: معلومات التواصل والشبكات الاجتماعية */}
         <div className="lg:col-span-5 flex flex-col gap-8">
           <div>
@@ -49,12 +78,13 @@ export default function ContactSection() {
               Have a project in mind?
             </h3>
             <p className="text-slate-600 dark:text-zinc-400 leading-relaxed text-sm md:text-base transition-colors">
-              I'm available for freelance opportunities and full-time positions. Let's build something amazing together.
+              I&apos;m available for freelance opportunities and full-time positions.
+              Let&apos;s build something amazing together.
             </p>
           </div>
 
           <div className="flex flex-col gap-5">
-            {/* بطاقة GitHub المتطورة */}
+            {/* بطاقة GitHub */}
             <div className="group relative p-4 rounded-xl transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl bg-gradient-to-r from-[#a374ff]/10 to-[#17f1d1]/10 hover:from-[#a374ff]/20 hover:to-[#17f1d1]/20 border border-slate-200/50 dark:border-white/5">
               <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#a374ff]/0 to-[#17f1d1]/0 opacity-0 group-hover:from-[#a374ff]/10 group-hover:to-[#17f1d1]/10 transition-opacity duration-300" />
               <div className="relative z-10 flex items-center gap-4">
@@ -62,15 +92,21 @@ export default function ContactSection() {
                   <GitGraph className="w-6 h-6 text-[#a374ff]" />
                 </div>
                 <div>
-                  <span className="text-xs text-slate-500 dark:text-zinc-400 block font-medium">GitHub</span>
-                  <Link href="https://github.com/AbdoDeveloper" target="_blank" className="text-sm md:text-base text-slate-800 dark:text-zinc-200 font-semibold group-hover:text-[#17f1d1] transition-colors">
+                  <span className="text-xs text-slate-500 dark:text-zinc-400 block font-medium">
+                    GitHub
+                  </span>
+                  <Link
+                    href="https://github.com/AbdoDeveloper"
+                    target="_blank"
+                    className="text-sm md:text-base text-slate-800 dark:text-zinc-200 font-semibold group-hover:text-[#17f1d1] transition-colors"
+                  >
                     Check out my code
                   </Link>
                 </div>
               </div>
             </div>
 
-            {/* بطاقة LinkedIn المتطورة */}
+            {/* بطاقة LinkedIn */}
             <div className="group relative p-4 rounded-xl transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl bg-gradient-to-r from-[#a374ff]/10 to-[#17f1d1]/10 hover:from-[#a374ff]/20 hover:to-[#17f1d1]/20 border border-slate-200/50 dark:border-white/5">
               <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#a374ff]/0 to-[#17f1d1]/0 opacity-0 group-hover:from-[#a374ff]/10 group-hover:to-[#17f1d1]/10 transition-opacity duration-300" />
               <div className="relative z-10 flex items-center gap-4">
@@ -78,15 +114,21 @@ export default function ContactSection() {
                   <Link2 className="w-6 h-6 text-[#17f1d1]" />
                 </div>
                 <div>
-                  <span className="text-xs text-slate-500 dark:text-zinc-400 block font-medium">LinkedIn</span>
-                  <Link href="https://linkedin.com/in/AbdoDeveloper" target="_blank" className="text-sm md:text-base text-slate-800 dark:text-zinc-200 font-semibold group-hover:text-[#a374ff] transition-colors">
+                  <span className="text-xs text-slate-500 dark:text-zinc-400 block font-medium">
+                    LinkedIn
+                  </span>
+                  <Link
+                    href="https://linkedin.com/in/AbdoDeveloper"
+                    target="_blank"
+                    className="text-sm md:text-base text-slate-800 dark:text-zinc-200 font-semibold group-hover:text-[#a374ff] transition-colors"
+                  >
                     Connect with me
                   </Link>
                 </div>
               </div>
             </div>
 
-            {/* بطاقة البريد الإلكتروني المتطورة */}
+            {/* بطاقة البريد الإلكتروني */}
             <div className="group relative p-4 rounded-xl transition-all duration-300 hover:translate-y-[-4px] hover:shadow-xl bg-gradient-to-r from-[#a374ff]/10 to-[#17f1d1]/10 hover:from-[#a374ff]/20 hover:to-[#17f1d1]/20 border border-slate-200/50 dark:border-white/5">
               <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#a374ff]/0 to-[#17f1d1]/0 opacity-0 group-hover:from-[#a374ff]/10 group-hover:to-[#17f1d1]/10 transition-opacity duration-300" />
               <div className="relative z-10 flex items-center gap-4">
@@ -94,8 +136,13 @@ export default function ContactSection() {
                   <Mail className="w-6 h-6 text-cyan-500 dark:text-[#17f1d1]" />
                 </div>
                 <div>
-                  <span className="text-xs text-slate-500 dark:text-zinc-400 block font-medium">Email</span>
-                  <Link href="mailto:osman.developer@example.com" className="text-sm md:text-base text-slate-800 dark:text-zinc-200 font-semibold group-hover:text-[#a374ff] transition-colors">
+                  <span className="text-xs text-slate-500 dark:text-zinc-400 block font-medium">
+                    Email
+                  </span>
+                  <Link
+                    href="mailto:osman.developer@example.com"
+                    className="text-sm md:text-base text-slate-800 dark:text-zinc-200 font-semibold group-hover:text-[#a374ff] transition-colors"
+                  >
                     Send me a message
                   </Link>
                 </div>
@@ -104,7 +151,7 @@ export default function ContactSection() {
           </div>
         </div>
 
-        {/* الجانب الأيمن: استمارة إرسال الرسائل بتصميم زجاجي */}
+        {/* الجانب الأيمن: استمارة إرسال الرسائل */}
         <div className="lg:col-span-7">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -112,59 +159,64 @@ export default function ContactSection() {
             viewport={{ once: true }}
             className="group relative rounded-2xl transition-all duration-300 hover:shadow-[0_0_30px_rgba(23,241,209,0.1)] bg-gradient-to-r from-[#a374ff]/5 to-[#17f1d1]/5 hover:from-[#a374ff]/10 hover:to-[#17f1d1]/10 border border-slate-200/50 dark:border-white/5"
           >
-            {/* طبقة التوهج الخلفية للنموذج */}
             <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#a374ff]/0 to-[#17f1d1]/0 opacity-0 group-hover:from-[#a374ff]/5 group-hover:to-[#17f1d1]/5 transition-opacity duration-500 blur-xl" />
-            
-            <form onSubmit={handleSubmit} className="relative z-10 p-6 md:p-8 space-y-5 backdrop-blur-md rounded-2xl">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div className="space-y-2">
-                  <label className="text-xs font-medium text-slate-600 dark:text-zinc-400">Your Name</label>
-                  <input
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    className="w-full bg-white/50 dark:bg-[#15222B]/50 border border-slate-200 dark:border-[#1C2A36] rounded-lg px-4 py-3 text-sm text-slate-900 dark:text-zinc-100 focus:outline-none focus:border-[#a374ff]/50 focus:ring-1 focus:ring-[#a374ff]/30 transition-all placeholder:text-slate-400 dark:placeholder:text-zinc-600 backdrop-blur-sm"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-medium text-slate-600 dark:text-zinc-400">Your Email</label>
-                  <input
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full bg-white/50 dark:bg-[#15222B]/50 border border-slate-200 dark:border-[#1C2A36] rounded-lg px-4 py-3 text-sm text-slate-900 dark:text-zinc-100 focus:outline-none focus:border-[#17f1d1]/50 focus:ring-1 focus:ring-[#17f1d1]/30 transition-all placeholder:text-slate-400 dark:placeholder:text-zinc-600 backdrop-blur-sm"
-                    placeholder="john@example.com"
-                  />
-                </div>
-              </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-medium text-slate-600 dark:text-zinc-400">Subject</label>
+            <form
+              onSubmit={handleSubmit}
+              className="relative z-10 p-6 md:p-8 space-y-5 backdrop-blur-md rounded-2xl"
+            >
+              {/* حقل الاسم */}
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-slate-600 dark:text-zinc-200">
+                  Name
+                </label>
                 <input
                   type="text"
                   required
-                  value={formData.subject}
-                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   className="w-full bg-white/50 dark:bg-[#15222B]/50 border border-slate-200 dark:border-[#1C2A36] rounded-lg px-4 py-3 text-sm text-slate-900 dark:text-zinc-100 focus:outline-none focus:border-[#a374ff]/50 focus:ring-1 focus:ring-[#a374ff]/30 transition-all placeholder:text-slate-400 dark:placeholder:text-zinc-600 backdrop-blur-sm"
-                  placeholder="Project Discussion"
+                  placeholder="What's your name?"
                 />
               </div>
 
+              {/* حقل البريد الإلكتروني */}
+              <div className="space-y-1">
+                <label className="text-sm font-medium text-slate-600 dark:text-zinc-200">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  className="w-full bg-white/50 dark:bg-[#15222B]/50 border border-slate-200 dark:border-[#1C2A36] rounded-lg px-4 py-3 text-sm text-slate-900 dark:text-zinc-100 focus:outline-none focus:border-[#17f1d1]/50 focus:ring-1 focus:ring-[#17f1d1]/30 transition-all placeholder:text-slate-400 dark:placeholder:text-zinc-600 backdrop-blur-sm"
+                  placeholder="Your email address"
+                />
+              </div>
+
+              {/* حقل الرسالة */}
               <div className="space-y-2">
-                <label className="text-xs font-medium text-slate-600 dark:text-zinc-400">Message</label>
+                <label className="text-sm font-medium text-slate-600 dark:text-zinc-200">
+                  Message
+                </label>
                 <textarea
                   rows={5}
                   required
                   value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, message: e.target.value })
+                  }
                   className="w-full bg-white/50 dark:bg-[#15222B]/50 border border-slate-200 dark:border-[#1C2A36] rounded-lg px-4 py-3 text-sm text-slate-900 dark:text-zinc-100 focus:outline-none focus:border-[#17f1d1]/50 focus:ring-1 focus:ring-[#17f1d1]/30 transition-all resize-none placeholder:text-slate-400 dark:placeholder:text-zinc-600 backdrop-blur-sm"
-                  placeholder="Tell me more about your project..."
+                  placeholder="What would you like to say?"
                 />
               </div>
 
+              {/* زر الإرسال */}
               <button
                 type="submit"
                 disabled={status === "loading"}
@@ -180,9 +232,15 @@ export default function ContactSection() {
                 )}
               </button>
 
+              {/* رسائل النجاح والخطأ */}
               {status === "success" && (
-                <p className="text-xs text-[#17f1d1] font-medium pt-2 text-center">
+                <p className="text-sm text-[#17f1d1] font-medium pt-2 text-center">
                   ✓ Thank you! Your message has been sent successfully.
+                </p>
+              )}
+              {status === "error" && (
+                <p className="text-sm text-red-500 font-medium pt-2 text-center">
+                  ✕ Oops! Something went wrong. Please try again later.
                 </p>
               )}
             </form>
