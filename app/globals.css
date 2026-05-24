@@ -9,6 +9,10 @@
   --color-foreground: var(--foreground);
 }
 
+.boundary{
+  border: 2px solid #f00;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #09090b;
@@ -28,6 +32,6 @@ body {
 .bg-grid-pattern {
   background-image: 
     linear-gradient(to right, rgba(128, 128, 128, 0.15) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(128, 128, 128, 0.15) 1px, transparent 1px);
-  background-size: 50px 50px; /* مربعات كبيرة */
+    linear-gradient(to bottom, rgba(0, 77, 192, 0.15) 1px, transparent 1px);
+  background-size: 60px 60px; /* مربعات كبيرة */
 }

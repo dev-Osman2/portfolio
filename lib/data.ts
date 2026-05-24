@@ -76,5 +76,17 @@ export const workHistoryData = [
       "Ensured websites were responsive and worked well on mobile devices."
     ],
     skills: ["HTML", "CSS", "JavaScript", "SQL", "Next.js"]
+  },
+  {
+    id: 3,
+    title: "Web Developer Intern",
+    company: "Saray El-Nile",
+    date: "July 2024 - August 2024",
+    description: "I helped develop a business data management system with SQL and Next.js.",
+    achievements: [
+      "Supported the team by joining meetings and code reviews.",
+      "Ensured websites were responsive and worked well on mobile devices."
+    ],
+    skills: ["HTML", "CSS", "JavaScript", "SQL", "Next.js"]
   }
 ];
